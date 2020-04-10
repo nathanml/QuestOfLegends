@@ -3,10 +3,7 @@ import Characters.Heroes.Hero;
 import Characters.Monsters.Monster;
 import Main.*;
 
-public abstract class Spell implements Sellable{
-    protected String name;
-    protected int price;
-    protected int minLevel;
+public abstract class Spell extends Item implements Sellable{
     protected int damage;
     protected int manaLevel;
 
@@ -18,9 +15,6 @@ public abstract class Spell implements Sellable{
         damage = dmg;
         manaLevel = mana;
     }
-
-
-    public String getName(){return name;}
 
     public int getMana() {return manaLevel;}
 

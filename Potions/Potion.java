@@ -2,10 +2,7 @@ package Potions;
 import Characters.Heroes.Hero;
 import Main.*;
 
-public abstract class Potion implements Sellable{
-    protected String name;
-    protected int price;
-    protected int minLevel;
+public abstract class Potion extends Item implements Sellable{
     protected int attributeIncrease;
 
     public Potion(String n, int cost, int level, int increase)
@@ -16,16 +13,7 @@ public abstract class Potion implements Sellable{
         attributeIncrease = increase;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public abstract void usePotion(Hero h);
-
-    @Override
-    public int getPrice() {
-        return price;
-    }
 
     @Override
     public void buyItem(Hero h) {
@@ -33,11 +21,6 @@ public abstract class Potion implements Sellable{
             h.wallet.spendMoney (this.price);
             h.addPotion (this);
         }
-    }
-
-    @Override
-    public int getLevel() {
-        return minLevel;
     }
 
     @Override

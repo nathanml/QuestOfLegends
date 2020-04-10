@@ -3,10 +3,10 @@ package Armors;
 import Characters.Heroes.Hero;
 import Main.*;
 
-public class Armor implements Sellable{
-    protected String name;
-    protected int price;
-    protected int minLevel;
+public class Armor extends Item implements Sellable{
+    //protected String name;
+    //protected int price;
+
     protected int damageReduction;
 
     public Armor(String n, int p, int l, int r) {
@@ -15,15 +15,6 @@ public class Armor implements Sellable{
         price = p;
         minLevel = l;
         damageReduction = r;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getPrice() {
-        return price;
     }
 
     @Override
@@ -39,11 +30,6 @@ public class Armor implements Sellable{
         h.removeArmor (this);
         System.out.println("You've sold " + this.getName ());
         h.printArmors ();
-    }
-
-    @Override
-    public int getLevel() {
-        return minLevel;
     }
 
     public int getDamageReduction()

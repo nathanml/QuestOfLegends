@@ -2,10 +2,7 @@ package Weapons;
 import Characters.Heroes.Hero;
 import Main.*;
 
-public class Weapon implements Sellable{
-    private String name;
-    private int price;
-    private int minLevel;
+public class Weapon extends Item implements Sellable{
     int damage;
 
     public Weapon(String n, int cost, int level, int dmg)
@@ -21,16 +18,6 @@ public class Weapon implements Sellable{
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public int getPrice(){
-        return price;
-    }
-
-    @Override
     public void sellItem(Hero h) {
         h.wallet.addMoney (price);
         h.removeWeapon (this);
@@ -41,11 +28,6 @@ public class Weapon implements Sellable{
     @Override
     public void buyItem(Hero h) {
         h.addWeapon (this);
-    }
-
-    @Override
-    public int getLevel() {
-        return minLevel;
     }
 
     public static void main(String[] args){
