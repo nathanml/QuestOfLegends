@@ -8,14 +8,19 @@ import Potions.Potion;
 import Spells.FireSpells.FireSpell;
 import Spells.IceSpells.IceSpell;
 import Spells.LightningSpells.LightningSpell;
+import Tiles.Board;
 import Weapons.Weapon;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static java.lang.System.in;
+
 public abstract class Hero extends Characters.Character {
-    public static Scanner input = new Scanner (System.in);
+    public static Scanner input = new Scanner (in);
     public Piece piece;
+    public int currentRow;        //Current row on board
+    public int currentCol;         //current col on board
     protected int mana;
     public int exp;
     protected int nextLevel;
@@ -545,9 +550,232 @@ public abstract class Hero extends Characters.Character {
         }
     }
 
-    public void move()
+    public void move(Board b, Team monsters)
     {
+        boolean notOver = true;
+        while (notOver)
+        {
+            System.out.println("Enter your move: ");
+            while (!input.hasNext ()){
+                System.out.println("Invalid input, please enter your move: ");
+            }
+            String in = input.next ();
 
+            if(in.equals ("I") || in.equals ("i"))
+            {
+                System.out.println(name);
+                System.out.println("---------");
+                printAttributes ();
+                checkInventory ();
+            }
+
+            else if(in.toLowerCase ().equals ("instructions"))
+            {
+                Quest.printInstructions ();
+                b.printBoard ();
+            }
+
+            else if(in.equals ("A") || in.equals ("a")){
+                if(b.isValid (currentRow, currentCol - 1))
+                {
+                    currentCol -= 1;
+                    b.setHeroTile (this);
+                    notOver = false;
+                }
+                else {
+                    System.out.println("Not a valid move. Please enter another move.");
+                }
+            }
+
+            else if(in.equals ("W") || in.equals ("w")){
+                if(b.isValid (currentRow-1, currentCol))
+                {
+                    currentRow -= 1;
+                    b.setHeroTile (this);
+                    notOver = false;
+                }
+                else {
+                    System.out.println("Not a valid move. Please enter another move.");
+                }
+            }
+
+            else if(in.equals ("S") || in.equals ("s")){
+                if(b.isValid (currentRow+1, currentCol))
+                {
+                    currentRow += 1;
+                    b.setHeroTile (this);
+                    notOver = false;
+                }
+                else {
+                    System.out.println("Not a valid move. Please enter another move.");
+                }
+            }
+
+            else if(in.equals ("D") || in.equals ("d")){
+                if(b.isValid (currentRow, currentCol+1))
+                {
+                    currentCol += 1;
+                    b.setHeroTile (this);
+                    notOver = false;
+                }
+                else {
+                    System.out.println("Not a valid move. Please enter another move.");
+                }
+            }
+
+            else if(in.equals ("1"))
+            {
+
+            }
+
+            else if(in.equals ("2"))
+            {
+                if(numLightningSpells () == 0 && numIceSpells () == 0 && numFireSpells () == 0)
+                {
+                    System.out.println("You don't have any spells you can cast at this time");
+                }
+                else{
+                    System.out.println("Which monster would you like to cast your spell against?");
+                    monsters.printTeam ();
+                    while (!input.hasNextInt ())
+                        System.out.println("Please enter the number of the monster you'd like to cast your spell against");
+                    int i = input.nextInt ();
+                    while (i < 0 || i > monsters.getSize ())
+                    {
+                        System.out.println("Not a valid input. Which monster would you like to ast your spell against?");
+                        monsters.printTeam ();
+                        i = input.nextInt ();
+                    }
+                    Monster m = (Monster) monsters.getCharacter (i);
+                    castSpell (m);
+                }
+            }
+
+            else if(in.equals ("3"))
+            {
+                if(numPotions () == 0)
+                {
+                    System.out.println("You don't have any potions you can drink at this time");
+                }
+                else{
+                    drinkPotion ();
+                }
+            }
+
+            else if(in.equals ("4"))
+            {
+                if(numWeapons () == 0)
+                {
+                    System.out.println("You don't have any weapons you can equip at this time");
+                }
+                else{
+                    changeWeapon ();
+                }
+            }
+
+            else if(in.equals ("5"))
+            {
+                if(numArmors () == 0)
+                {
+                    System.out.println("You don't have any armors you can use at this time");
+                }
+                else{
+                    changeArmor ();
+                }
+            }
+
+            else if(in.toLowerCase ().equals ("exit"))
+            {
+                System.out.println("Goodbye");
+                System.exit (0);
+            }
+        }
+
+
+
+
+        /*
+         * CASE 2: Move Up
+         *
+        else if(in.equals ("W") || in.equals ("w"))
+        {
+            if(board.isValid (currentRow - 1, currentCol)) {
+                if(!board.isMarket (currentRow,currentCol))
+                    board.removeTile (currentRow,currentCol);
+                else
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
+                currentRow -= 1;
+                if(board.isMarket (currentRow, currentCol))
+                {
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
+                    //board.printBoard ();
+
+                }
+                else {
+                    board.setTile (currentRow,currentCol, pieces[1]);
+                    //board.printBoard ();
+                }
+            }
+            else {
+                System.out.println("Not a valid tile. Please enter your move: ");
+            }
+        }
+        /*
+         * CASE 3: Move down
+         *
+        else if(in.equals ("S") || in.equals ("s")){
+            if(board.isValid (currentRow + 1, currentCol)){
+                if(!board.isMarket (currentRow,currentCol))
+                    board.removeTile (currentRow,currentCol);
+                else
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
+                currentRow += 1;
+                if(board.isMarket (currentRow, currentCol))
+                {
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
+                    //board.printBoard ();
+
+                }
+                else {
+                    board.setTile (currentRow,currentCol, pieces[1]);
+                    //board.printBoard ();
+                }
+            }
+            else {
+                System.out.println("Not a valid tile. Please enter your move: ");
+            }
+        }
+
+        /*
+         * CASE 4: Move Right
+         *
+        else if(in.equals ("D") || in.equals ("d")){
+            if(board.isValid (currentRow, currentCol+1)){
+                if(!board.isMarket (currentRow,currentCol))
+                    board.removeTile (currentRow,currentCol);
+                else
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
+                currentCol += 1;
+                if(board.isMarket (currentRow, currentCol))
+                {
+                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
+
+                }
+                else {
+                    board.setTile (currentRow,currentCol, pieces[1]);
+                }
+            }
+            else{
+                System.out.println("Not a valid tile. Please enter your move:");
+            }
+        }
+
+        else {
+            System.out.println("Goodbye");
+            System.exit (0);
+        }
+
+        */
     }
 
     public int numWeapons() {

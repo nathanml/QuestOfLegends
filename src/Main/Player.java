@@ -9,14 +9,10 @@ public class Player {
     static Scanner input = new Scanner(System.in);
     private String name;    //Player's name
     public Team<Hero> heroes;   //Player's team of heroes
-    int currentRow;        //Current row on board
-    int currentCol;         //current col on board
 
     public Player(String n, int t){
         /*Constructor method for player*/
         name = n;
-        currentRow = 4;
-        currentCol = 4;
         heroes = new Team<Hero> ("Heroes", t);
     }
 
@@ -25,9 +21,9 @@ public class Player {
         return name;
     }
 
-    public void move(Board board, Piece[] pieces) {
+    public void move(Board board,Team monsters) {
         //Method for moving on the game board
-        /*
+
         for(int i=0; i<heroes.getSize (); i++)
         {
             heroes.changeCurrentCharacter (i);
@@ -36,9 +32,10 @@ public class Player {
             System.out.println("---------");
             currentHero.printAttributes ();
             currentHero.checkInventory ();
-            currentHero.move();
+            currentHero.move(board, monsters);
         }
-
+    }
+        /*
         System.out.println("Enter your move: ");
         while (!input.hasNext ()){
             System.out.println("Invalid input, please enter your move: ");
@@ -75,9 +72,8 @@ public class Player {
             in = input.next();
         }
 
-        /*
-         * CASE 1: Move Left
-         *
+
+
         if(in.equals ("A") || in.equals ("a")){
             if(board.isValid (currentRow, currentCol-1)){
                 if(!board.isMarket (currentRow,currentCol))

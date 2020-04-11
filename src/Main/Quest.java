@@ -311,12 +311,6 @@ public class Quest extends BoardGame implements Playable{
         }
     }
 
-    //Method for intitializing null spaces on board
-    private void initializeNullSpace()
-    {
-
-    }
-
     @Override
     public void playGame() {
         //Method for playing the quest
@@ -324,7 +318,7 @@ public class Quest extends BoardGame implements Playable{
         while(!isOver)
         {
             //Main.Player moves piece on the board
-            currentPlayer.move(board, gamePieces);
+            currentPlayer.move(board, monsters);
 
             //If fight, begin fight
 

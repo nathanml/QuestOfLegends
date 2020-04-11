@@ -74,9 +74,9 @@ public class Board {
         return tiles[row][col];
     }
 
-    public void setHeroTile(int row, int col, Hero h){
+    public void setHeroTile(Hero h){
         /* Method for putting piece on tile*/
-        tiles[row][col].setHeroTile (h);
+        tiles[h.currentRow][h.currentCol].setHeroTile (h);
     }
 
     public void setMonsterTile(int row, int col, Monster m){

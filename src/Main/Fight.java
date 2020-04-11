@@ -159,6 +159,10 @@ public class Fight {
                          * */
                         if(in == 1)
                         {
+                            if(hero.hasNeighboringMonsters)
+                            {
+
+                            }
                             System.out.println("Which monster would you like to attack?");
                             monsters.printTeam ();
                             while (!input.hasNextInt ())
