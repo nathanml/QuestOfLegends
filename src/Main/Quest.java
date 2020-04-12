@@ -1,5 +1,6 @@
 package Main;
 
+import Characters.Character;
 import Characters.Heroes.Hero;
 import Characters.Monsters.Monster;
 import Tiles.*;
@@ -202,24 +203,30 @@ public class Quest extends BoardGame implements Playable{
             {
                 if(warriors[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
                 {
-                    currentPlayer.heroes.add (warriors[i]);
-                    currentPlayer.heroes.updateHealth ();
-                    System.out.println(warriors[i].getName () + " has joined your team");
+                    Warrior copy = warriors[i].copy();
+                    copy.setTile (board,7, (size-1)*3);
+                    copy.setStartLane (size-1);
+                    currentPlayer.heroes.add (copy);
+                    System.out.println(copy.getName () + " has joined your team");
                     size -= 1;
                 }
 
                 else if(sorcerers[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
                 {
-                    currentPlayer.heroes.add (sorcerers[i]);
-                    currentPlayer.heroes.updateHealth ();
+                    Sorcerer copy = sorcerers[i].copy();
+                    copy.setTile (board,7,(size-1)*3);
+                    copy.setStartLane (size-1);
+                    currentPlayer.heroes.add (copy);
                     System.out.println(sorcerers[i].getName () + " has joined your team");
                     size -= 1;
                 }
 
                 else if(paladins[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
                 {
-                    currentPlayer.heroes.add (paladins[i]);
-                    currentPlayer.heroes.updateHealth ();
+                    Paladin copy = paladins[i].copy();
+                    copy.setTile (board,7,(size-1)*3);
+                    copy.setStartLane (size-1);
+                    currentPlayer.heroes.add (copy);
                     System.out.println(paladins[i].getName () + " has joined your team");
                     size -= 1;
                 }
@@ -229,7 +236,6 @@ public class Quest extends BoardGame implements Playable{
         //Method for creating team of monsters
         size = 3;
         monsters = new Team<Monster> ("Monsters", size);
-        monsters.setLevel (currentPlayer.heroes.level);
 
         for(int i=0; i<size; i++)
         {
@@ -237,16 +243,23 @@ public class Quest extends BoardGame implements Playable{
             int x = (int) (Math.random () * 3);
             if(x == 1)
             {
-                monsters.add (dragons[monsters.level-1]);
-                monsters.totalHealth += dragons[monsters.level-1].getHP ();
+                Dragon copy = dragons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,(size-1)*3);
+                copy.setStartLane (size-1);
+                monsters.add (copy);
             }
             else if(x==2)
             {
-                monsters.add(exoskeletons[monsters.level -1]);
+                Exoskeleton copy = exoskeletons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,(size-1)*3);
+                monsters.add(copy);
             }
             else {
-                monsters.add(spirits[monsters.level-1]);
+                Spirit copy = spirits[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,(size-1)*3);
+                monsters.add(copy);
             }
+            monsters.getCharacter (i).setTile (board, 0, i*3);
         }
     }
 
@@ -300,14 +313,10 @@ public class Quest extends BoardGame implements Playable{
     //Method for setting start tile of the game
     //Game will always start with heroes on tile 1,1
     private void setStartTiles() {
-        int col = 0;
         for(int i=0; i < 3; i++)
         {
-            Hero currentHero = (Hero) currentPlayer.heroes.getCharacter (i);
             Monster currentMonster = (Monster) monsters.getCharacter (i);
-            board.setMonsterTile (0, col, currentMonster);
-            board.setHeroTile (7, col, currentHero);
-            col += 3;
+            board.setMonsterTile (0, i*3, currentMonster);
         }
     }
 
@@ -315,20 +324,103 @@ public class Quest extends BoardGame implements Playable{
     public void playGame() {
         //Method for playing the quest
 
-        while(!isOver)
+        while (!isOver) {
+
+            //Every 8 rounds
+            if (numTurns % 8 == 0 && numTurns != 0) {
+                for (int i = 0; i < 3; i++) {
+                    //Randomly assign correct level dragon, exoskeleton, or spirit
+                    int x = (int) (Math.random () * 3);
+                    if (x == 1) {
+                        Dragon copy = dragons[currentPlayer.heroes.getCharacter (i).getLevel () - 1].copy ();
+                        copy.setTile (board, 0, copy.getStartLane () * 3);
+                        monsters.add (copy);
+                    } else if (x == 2) {
+                        Exoskeleton copy = exoskeletons[currentPlayer.heroes.getCharacter (i).getLevel () - 1].copy ();
+                        copy.setTile (board, 0, copy.getStartLane () * 3);
+                        monsters.add (copy);
+                    } else {
+                        Spirit copy = spirits[currentPlayer.heroes.getCharacter (i).getLevel () - 1].copy ();
+                        copy.setTile (board, 0, copy.getStartLane () * 3);
+                        monsters.add (copy);
+                    }
+                    monsters.getCharacter (i).setTile (board, 0, i * 3);
+                }
+            }
+                //Monsters move first
+                for (int i = 0; i < monsters.getSize (); i++) {
+                    System.out.println (i);
+                    monsters.changeCurrentCharacter (i);
+                    Monster currentMonster = (Monster) monsters.getCurrentCharacter ();
+                    System.out.println (currentMonster.getName () + " moves");
+                    currentMonster.move (board, currentPlayer.heroes);
+                    checkWinner ();
+
+                    //Hero respawns if dead
+                    for (int x = 0; x < 3; x++) {
+                        if (!currentPlayer.heroes.getCharacter (x).isAlive ()) {
+                            Hero currentHero = (Hero) currentPlayer.heroes.getCharacter (x);
+
+                            for (int j = 0; j < 3; j++) {
+                                if (warriors[j].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
+                                    Warrior copy = warriors[j].copy ();
+                                    copy.setTile (board, 7, currentHero.getStartLane () * 3);
+                                    currentPlayer.heroes.add (copy);
+                                } else if (sorcerers[j].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
+                                    Sorcerer copy = sorcerers[j].copy ();
+                                    copy.setTile (board, 7, currentHero.getStartLane () * 3);
+                                    currentPlayer.heroes.add (copy);
+                                } else if (paladins[i].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
+                                    Paladin copy = paladins[i].copy ();
+                                    copy.setTile (board, 7, currentHero.getStartLane () * 3);
+                                    currentPlayer.heroes.add (copy);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Player moves next
+                currentPlayer.move (board, monsters);
+                checkWinner ();
+                numTurns += 1;
+        }
+
+        System.out.println (winner + " has won the game. Would you like to play another game? [Y/N]");
+        String in = input.next();
+        while(!(in.equals ("Y") || in.equals ("y") || in.equals ("N") || in.equals ("n")))
         {
-            //Main.Player moves piece on the board
-            currentPlayer.move(board, monsters);
-
-            //If fight, begin fight
-
-
-            //board.printBoard ();
-
+            System.out.println("Invalid input. Would you like to play another game?");
+            in = input.next ();
+        }
+        if(in.equals ("Y") || in.equals ("y"))
+        {
+            Quest q = new Quest();
+            q.playGame ();
+        }
+        else {
+            System.out.println("Goodbye.");
+            System.exit(0);
         }
     }
 
-    public static void main(String[] args){
+    private void checkWinner() {
+        for(int i=0; i<3; i++)
+        {
+            if(monsters.getCharacter (i).currentRow == 7)
+            {
+                winner = monsters.getName ();
+                isOver = true;
+            }
+            else if(currentPlayer.heroes.getCharacter (i).currentRow == 0)
+            {
+                winner = currentPlayer.heroes.getName ();
+                isOver = true;
+            }
+        }
+    }
+
+    public static void main (String[]args){
 
     }
 }

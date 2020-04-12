@@ -6,9 +6,9 @@ import Characters.Heroes.*;
 
 public class Armory extends Market{
 
-    public Armory(Player p) {
+    public Armory(Hero h) {
         //Constructor for an armory
-        super (p);
+        super (h);
         items = new Armor[6];
         items[0] = new Platinum_Shield();
         items[1] = new Breastplate();

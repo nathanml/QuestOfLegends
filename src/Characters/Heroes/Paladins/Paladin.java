@@ -5,13 +5,15 @@ import Characters.Heroes.Hero;
 import Main.Piece;
 import Spells.Spell;
 
-public class Paladin extends Hero {
+public abstract class Paladin extends Hero {
 
     public Paladin(String n, int m, int s, int a, int d, int mon, int x)
     {
         super(n,m,s,a,d,mon,x);
         piece = new Piece (name, "P", true);
     }
+
+    public abstract Paladin copy();
 
     public static void main(String[] args){
 

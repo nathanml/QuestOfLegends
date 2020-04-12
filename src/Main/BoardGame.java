@@ -11,6 +11,7 @@ public abstract class BoardGame implements Playable {
     Tiles.Board board;        //Game board
     int numTurns;       //Counts the how many turns there have been in a game
     boolean isOver;     //Keeps track of when game is over
+    String winner;
 
     public BoardGame(){
         /*Constructor for board game*/

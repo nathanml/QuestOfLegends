@@ -3,8 +3,9 @@ package Characters.Monsters.Spirits;
 import Characters.Character;
 import Characters.Monsters.Monster;
 import Main.Piece;
+import Tiles.Board;
 
-public class Spirit extends Monster {
+public abstract class Spirit extends Monster {
 
     public Spirit(String n, int lev, int dmg, int def, int dc)
     {
@@ -12,10 +13,19 @@ public class Spirit extends Monster {
         piece = new Piece (name, "S", false);
     }
 
+    public abstract Spirit copy();
+
+    public void respawn(Board b)
+    {
+        Spirit copy = copy();
+        copy.setStartLane (startLane);
+        copy.setTile (b,0,startLane*3);
+    }
     public static void main(String[] args){
 
     }
 
+    /*
     @Override
     public void attack(Character c) {
 
@@ -35,4 +45,6 @@ public class Spirit extends Monster {
     public void displayStats() {
 
     }
+
+     */
 }

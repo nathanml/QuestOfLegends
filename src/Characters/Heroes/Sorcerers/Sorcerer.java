@@ -5,7 +5,7 @@ import Characters.Heroes.Hero;
 import Main.Piece;
 import Spells.Spell;
 
-public class Sorcerer extends Hero {
+public abstract class Sorcerer extends Hero {
 
     public Sorcerer(String n, int m, int s, int a, int d, int mon, int x){
         super(n,m,s,a,d,mon,x);
@@ -23,6 +23,8 @@ public class Sorcerer extends Hero {
         agility = agility + agility/10;
         System.out.println("CONGRATULATIONS! You've leveled up. You are now a level " + level + " hero");
     }
+
+    public abstract Sorcerer copy();
 
     public static void main(String[] args){
 

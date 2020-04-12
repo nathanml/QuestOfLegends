@@ -11,9 +11,9 @@ public class IceMarket extends Market {
     private IceSpell FrostBlizzard = new IceSpell ("Frost Blizzard",750,5,850,350);
     private IceSpell ArcticStorm = new IceSpell ("Arctic Storm",700,6,800,300);
 
-    public IceMarket(Player p)
+    public IceMarket(Hero h)
     {
-        super (p);
+        super (h);
         items = new IceSpell[4];
         items[0] = IceBlade;
         items[1] = SnowCannon;

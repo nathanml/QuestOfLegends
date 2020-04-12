@@ -1,13 +1,27 @@
 package Characters;
 
 import Main.*;
+import Tiles.Board;
 
 public abstract class Character implements Fightable {
     protected String name;
     public int level;
+    public int currentRow;
+    public int currentCol;
     protected int hp = 100*level;
-    public boolean isAlive;
+    protected boolean isAlive;
     public Piece piece;
+    protected int startLane;
+
+    public void setStartLane(int i)
+    {
+        startLane = i;
+    }
+
+    public int getStartLane()
+    {
+        return startLane;
+    }
 
     public String getName()
     {
@@ -40,10 +54,12 @@ public abstract class Character implements Fightable {
 
     public abstract void printAttributes();
 
-    public abstract void move();
+    public abstract void move(Board b, Team t);
 
     public static void main(String[] args)
     {
 
     }
+
+    public abstract void setTile(Board board, int row, int col);
 }

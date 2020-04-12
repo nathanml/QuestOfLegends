@@ -8,11 +8,9 @@ public class Board {
     private int numRows;    //Number of rows in board
     private int numColumns; //Number of columns in board
     private Tile[][] tiles; //Array of tiles for holding pieces
-    private int numTiles;   //Stores number of tiles on board (for checking if board is full)
 
     public Board(int w, int h){
         /* Method for initializing a board to specified dimensions*/
-        numTiles = h*w;
         numRows = h;
         numColumns = w;
         tiles = new Tile[w][h];
@@ -55,7 +53,7 @@ public class Board {
     public void printBoard(){
         /* Method for displaying board to user */
         System.out.println("------------------------------------------------------------------------");
-        System.out.println ("                        HEROES NEXUS                                   ");
+        System.out.println ("                        MONSTERS NEXUS                                 ");
         for(int i = 0; i < numRows; i++){
             System.out.println("------------------------------------------------------------------------");
             String toPrint = "";
@@ -65,7 +63,7 @@ public class Board {
             System.out.println(toPrint);
         }
         System.out.println("------------------------------------------------------------------------");
-        System.out.println ("                        MONSTERS NEXUS                                 ");
+        System.out.println ("                        HEROES NEXUS                                 ");
         System.out.println("------------------------------------------------------------------------");
     }
 
@@ -74,9 +72,9 @@ public class Board {
         return tiles[row][col];
     }
 
-    public void setHeroTile(Hero h){
+    public void setHeroTile(int row, int col, Hero h){
         /* Method for putting piece on tile*/
-        tiles[h.currentRow][h.currentCol].setHeroTile (h);
+        tiles[row][col].setHeroTile (h);
     }
 
     public void setMonsterTile(int row, int col, Monster m){
@@ -88,8 +86,8 @@ public class Board {
         if(row >= numRows || row < 0 || col >= numColumns || col < 0)
             return false;
         if(isAccessible(row,col))
-            return false;
-        else return true;
+            return true;
+        else return false;
     }
 
     //Method for checking if tile is NA tile

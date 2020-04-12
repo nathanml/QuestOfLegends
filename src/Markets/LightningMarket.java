@@ -11,9 +11,9 @@ public class LightningMarket extends Market{
     private static LightningSpell SparkNeedles = new LightningSpell ("Spark Needles", 500,2,600,200);
 
 
-    public LightningMarket(Player p)
+    public LightningMarket(Hero h)
     {
-        super (p);
+        super (h);
         items = new LightningSpell[4];
         items[0] = LightningDagger;
         items[1] = ThunderBlast;

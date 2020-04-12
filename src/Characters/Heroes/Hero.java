@@ -2,6 +2,7 @@ package Characters.Heroes;
 
 import Main.*;
 import Armors.Armor;
+import Characters.Character;
 import Characters.Monsters.Monster;
 import Main.Wallet;
 import Potions.Potion;
@@ -9,6 +10,7 @@ import Spells.FireSpells.FireSpell;
 import Spells.IceSpells.IceSpell;
 import Spells.LightningSpells.LightningSpell;
 import Tiles.Board;
+import Tiles.Tile;
 import Weapons.Weapon;
 
 import java.util.ArrayList;
@@ -16,11 +18,9 @@ import java.util.Scanner;
 
 import static java.lang.System.in;
 
-public abstract class Hero extends Characters.Character {
+public abstract class Hero extends Character {
     public static Scanner input = new Scanner (in);
     public Piece piece;
-    public int currentRow;        //Current row on board
-    public int currentCol;         //current col on board
     protected int mana;
     public int exp;
     protected int nextLevel;
@@ -231,7 +231,7 @@ public abstract class Hero extends Characters.Character {
         if (currentWeapon == null) {
             System.out.println (name + " attacked " + m.getName ());
             m.damage (strength / 2);
-            if(m.isAlive)
+            if(m.isAlive())
                 System.out.println(m.getName () + " hp : " + m.getHP ());
         }
         else{
@@ -239,7 +239,7 @@ public abstract class Hero extends Characters.Character {
             int totalDamage = (strength + weaponDamage) / 2;
             System.out.println (name + " attacked " + m.getName ());
             m.damage (totalDamage);
-            if(m.isAlive)
+            if(m.isAlive())
                 System.out.println(m.getName () + " hp : " + m.getHP ());
         }
     }
@@ -569,6 +569,14 @@ public abstract class Hero extends Characters.Character {
                 checkInventory ();
             }
 
+            else if(in.equals ("b") || in.equals ("b"))
+            {
+                b.tileAt (currentRow, currentCol).removeHero ();
+                b.setHeroTile (7, startLane * 3,this);
+                b.printBoard ();
+                notOver = true;
+            }
+
             else if(in.toLowerCase ().equals ("instructions"))
             {
                 Quest.printInstructions ();
@@ -578,8 +586,9 @@ public abstract class Hero extends Characters.Character {
             else if(in.equals ("A") || in.equals ("a")){
                 if(b.isValid (currentRow, currentCol - 1))
                 {
+                    b.tileAt (currentRow,currentCol).removeHero ();
                     currentCol -= 1;
-                    b.setHeroTile (this);
+                    b.setHeroTile (currentRow, currentCol, this);
                     notOver = false;
                 }
                 else {
@@ -590,8 +599,9 @@ public abstract class Hero extends Characters.Character {
             else if(in.equals ("W") || in.equals ("w")){
                 if(b.isValid (currentRow-1, currentCol))
                 {
+                    b.tileAt (currentRow,currentCol).removeHero ();
                     currentRow -= 1;
-                    b.setHeroTile (this);
+                    b.setHeroTile (currentRow, currentCol, this);
                     notOver = false;
                 }
                 else {
@@ -602,8 +612,9 @@ public abstract class Hero extends Characters.Character {
             else if(in.equals ("S") || in.equals ("s")){
                 if(b.isValid (currentRow+1, currentCol))
                 {
+                    b.tileAt (currentRow,currentCol).removeHero ();
                     currentRow += 1;
-                    b.setHeroTile (this);
+                    b.setHeroTile (currentRow, currentCol, this);
                     notOver = false;
                 }
                 else {
@@ -614,8 +625,9 @@ public abstract class Hero extends Characters.Character {
             else if(in.equals ("D") || in.equals ("d")){
                 if(b.isValid (currentRow, currentCol+1))
                 {
+                    b.tileAt (currentRow,currentCol).removeHero ();
                     currentCol += 1;
-                    b.setHeroTile (this);
+                    b.setHeroTile (currentRow, currentCol, this);
                     notOver = false;
                 }
                 else {
@@ -625,6 +637,36 @@ public abstract class Hero extends Characters.Character {
 
             else if(in.equals ("1"))
             {
+                Tile currentTile = b.tileAt (currentRow,currentCol);
+                Tile sideTile;
+                if(b.isValid (currentRow, currentCol + 1))
+                {
+                    sideTile = b.tileAt (currentRow, currentCol+1);
+                }
+                else
+                {
+                    sideTile = b.tileAt (currentRow, currentCol-1);
+                }
+                Tile frontTile =  b.tileAt (currentRow + 1, currentCol);
+
+                if(!(currentTile.hasMonsterPiece ||  sideTile.hasMonsterPiece || frontTile.hasMonsterPiece))
+                {
+                    System.out.println ("No monsters to attack");
+                }
+                else{
+                    for(int i=0; i<monsters.getSize ();i++)
+                    {
+                        Monster current = (Monster) monsters.getCharacter (i);
+                        if(b.tileAt (current.currentRow, current.currentCol) == currentTile ||
+                                b.tileAt (current.currentRow, current.currentCol) == sideTile ||
+                                b.tileAt (current.currentRow, current.currentCol) == frontTile)
+                        {
+                            attack (current);
+                            b.printBoard ();
+                            notOver = false;
+                        }
+                    }
+                }
 
             }
 
@@ -648,6 +690,7 @@ public abstract class Hero extends Characters.Character {
                     }
                     Monster m = (Monster) monsters.getCharacter (i);
                     castSpell (m);
+                    notOver = false;
                 }
             }
 
@@ -659,6 +702,7 @@ public abstract class Hero extends Characters.Character {
                 }
                 else{
                     drinkPotion ();
+                    notOver = false;
                 }
             }
 
@@ -670,6 +714,7 @@ public abstract class Hero extends Characters.Character {
                 }
                 else{
                     changeWeapon ();
+                    notOver = false;
                 }
             }
 
@@ -681,6 +726,29 @@ public abstract class Hero extends Characters.Character {
                 }
                 else{
                     changeArmor ();
+                    notOver = false;
+                }
+            }
+
+            else if(in.toLowerCase ().equals ("teleport"))
+            {
+                System.out.println("Enter the row you would like to teleport to");
+                while (!input.hasNextInt ())
+                    System.out.println("Please enter an integer");
+                int row = input.nextInt ();
+                System.out.println("Enter the column you would like to teleport to");
+                while (!input.hasNextInt ())
+                    System.out.println("Please enter an integer");
+                int col = input.nextInt ();
+                if(b.isValid (row,col) && (col == currentCol + 1 || col == currentCol - 1))
+                    System.out.println("Not a valid tile to teleport to");
+                else
+                {
+                    b.tileAt (currentRow,currentCol).removeHero ();
+                    currentRow = row;
+                    currentCol = col;
+                    b.setHeroTile (currentRow, currentCol, this);
+                    notOver = false;
                 }
             }
 
@@ -690,92 +758,6 @@ public abstract class Hero extends Characters.Character {
                 System.exit (0);
             }
         }
-
-
-
-
-        /*
-         * CASE 2: Move Up
-         *
-        else if(in.equals ("W") || in.equals ("w"))
-        {
-            if(board.isValid (currentRow - 1, currentCol)) {
-                if(!board.isMarket (currentRow,currentCol))
-                    board.removeTile (currentRow,currentCol);
-                else
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
-                currentRow -= 1;
-                if(board.isMarket (currentRow, currentCol))
-                {
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
-                    //board.printBoard ();
-
-                }
-                else {
-                    board.setTile (currentRow,currentCol, pieces[1]);
-                    //board.printBoard ();
-                }
-            }
-            else {
-                System.out.println("Not a valid tile. Please enter your move: ");
-            }
-        }
-        /*
-         * CASE 3: Move down
-         *
-        else if(in.equals ("S") || in.equals ("s")){
-            if(board.isValid (currentRow + 1, currentCol)){
-                if(!board.isMarket (currentRow,currentCol))
-                    board.removeTile (currentRow,currentCol);
-                else
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
-                currentRow += 1;
-                if(board.isMarket (currentRow, currentCol))
-                {
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
-                    //board.printBoard ();
-
-                }
-                else {
-                    board.setTile (currentRow,currentCol, pieces[1]);
-                    //board.printBoard ();
-                }
-            }
-            else {
-                System.out.println("Not a valid tile. Please enter your move: ");
-            }
-        }
-
-        /*
-         * CASE 4: Move Right
-         *
-        else if(in.equals ("D") || in.equals ("d")){
-            if(board.isValid (currentRow, currentCol+1)){
-                if(!board.isMarket (currentRow,currentCol))
-                    board.removeTile (currentRow,currentCol);
-                else
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = false;
-                currentCol += 1;
-                if(board.isMarket (currentRow, currentCol))
-                {
-                    board.tileAt (currentRow,currentCol).hasHeroPiece = true;
-
-                }
-                else {
-                    board.setTile (currentRow,currentCol, pieces[1]);
-                }
-            }
-            else{
-                System.out.println("Not a valid tile. Please enter your move:");
-            }
-        }
-
-        else {
-            System.out.println("Goodbye");
-            System.exit (0);
-        }
-
-        */
     }
 
     public int numWeapons() {
@@ -828,4 +810,22 @@ public abstract class Hero extends Characters.Character {
     {
         return armors.get(i);
     }
+
+    public boolean canAfford(Item i)
+    {
+        return (wallet.getMoney () > i.getPrice ());
+    }
+
+    public void setTile(Board board, int row, int col)
+    {
+        if(board.isValid (row,col))
+        {
+            currentRow = row;
+            currentCol = col;
+            board.setHeroTile (row,col,this);
+        }
+        else System.out.println("Not a valid tile");
+    }
+
+
 }

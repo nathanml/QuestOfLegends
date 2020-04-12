@@ -10,8 +10,8 @@ public class FireMarket extends Market {
     private static FireSpell HeatWave = new FireSpell ("Heat Wave",50,2,600,150);
     private static FireSpell LavaCommet = new FireSpell ("Lava Commet", 800,7,1000,550);
 
-    public FireMarket(Player p) {
-        super (p);
+    public FireMarket(Hero h) {
+        super (h);
         items = new FireSpell[4];
         items[0] = FlameTornado;
         items[1] = BreathOfFire;

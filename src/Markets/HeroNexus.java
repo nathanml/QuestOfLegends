@@ -3,10 +3,10 @@ package Markets;
 import Characters.Heroes.Hero;
 import Main.Player;
 
-public class GrandMarket extends Market {
+public class HeroNexus extends Market {
 
-    public GrandMarket(Player p) {
-        super (p);
+    public HeroNexus(Hero h) {
+        super (h);
     }
 
     public void chooseMarket()
@@ -22,7 +22,7 @@ public class GrandMarket extends Market {
 
     public void enter()
     {
-        System.out.println ("WELCOME TO THE GRAND MARKET");
+        System.out.println ("WELCOME TO THE HERO NEXUS");
         chooseMarket ();
         while (!input.hasNextInt ())
         {
@@ -35,38 +35,38 @@ public class GrandMarket extends Market {
         {
             if(in == 1)
             {
-                Armory a = new Armory (currentPlayer);
+                Armory a = new Armory (currentHero);
                 a.enter ();
                 chooseMarket ();
             }
             if(in == 2)
             {
-                WeaponsMarket w = new WeaponsMarket (currentPlayer);
+                WeaponsMarket w = new WeaponsMarket (currentHero);
                 w.enter();
                 chooseMarket ();
             }
             if(in == 3)
             {
-                PotionMarket p = new PotionMarket (currentPlayer);
+                PotionMarket p = new PotionMarket (currentHero);
                 p.enter ();
                 chooseMarket ();
             }
             if(in == 4)
             {
-                FireMarket f = new FireMarket (currentPlayer);
+                FireMarket f = new FireMarket (currentHero);
                 f.enter ();
                 chooseMarket ();
             }
             if(in == 5)
             {
                 System.out.println(in);
-                IceMarket i = new IceMarket (currentPlayer);
+                IceMarket i = new IceMarket (currentHero);
                 i.enter ();
                 chooseMarket ();
             }
             if(in == 6)
             {
-                LightningMarket l = new LightningMarket (currentPlayer);
+                LightningMarket l = new LightningMarket (currentHero);
                 l.enter ();
                 chooseMarket ();
             }

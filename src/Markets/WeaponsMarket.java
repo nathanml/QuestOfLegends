@@ -5,8 +5,8 @@ import Weapons.*;
 
 public class WeaponsMarket extends Market {
 
-    public WeaponsMarket(Player p) {
-        super (p);
+    public WeaponsMarket(Hero h) {
+        super (h);
         items = new Weapon[7];
         items[0] = new Sword();
         items[1] = new Bow();

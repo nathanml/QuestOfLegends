@@ -11,6 +11,7 @@ public class Team<T extends Character> implements Fightable {
     int level;      //Level of the team
     int current;    //Tracks index of current character
     ArrayList<T> characters = new ArrayList<T> ();  //List of characters on team
+    ArrayList<T> copies = new ArrayList<T> ();
 
     //Used generics so that teams can consist of all any subclass of Character (hero and monster)
 
@@ -18,7 +19,6 @@ public class Team<T extends Character> implements Fightable {
     public Team(String n, int size)
     {
         name = n;
-        totalHealth = 0;
         level = 1;
     }
 
@@ -27,7 +27,7 @@ public class Team<T extends Character> implements Fightable {
     {
         for(int i=0; i<characters.size ();i++)
         {
-            if(characters.get (i).isAlive){
+            if(characters.get (i).isAlive()){
                 System.out.println(i + ". " + characters.get (i).getName());
             }
             else System.out.println();
@@ -55,8 +55,8 @@ public class Team<T extends Character> implements Fightable {
     //Method for adding character to team
     public void add(Character c){
         characters.add ((T) c);
+        copies.add ((T) c);
         current = characters.indexOf (c);
-        totalHealth += c.getHP ();
     }
 
     //Returns team name
@@ -139,15 +139,6 @@ public class Team<T extends Character> implements Fightable {
         return characters.get (x);
     }
 
-    public void remove(T current) {
-        for(int i=0; i<characters.size (); i++)
-        {
-            if(characters.get (i) == current){
-                characters.remove (i);
-                break;
-            }
-        }
-    }
     public static void main(String[] args){
 
     }

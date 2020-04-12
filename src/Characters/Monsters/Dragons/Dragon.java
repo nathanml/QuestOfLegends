@@ -4,7 +4,7 @@ import Characters.Character;
 import Characters.Monsters.Monster;
 import Main.Piece;
 
-public class Dragon extends Monster {
+public abstract class Dragon extends Monster {
 
     public Dragon(String n, int l, int dmg, int def, int dc){
         super(n,l,dmg,def,dc);
@@ -15,6 +15,9 @@ public class Dragon extends Monster {
 
     }
 
+    public abstract Dragon copy();
+
+    /*
     @Override
     public void attack(Character c) {
 
@@ -33,5 +36,5 @@ public class Dragon extends Monster {
     @Override
     public void displayStats() {
 
-    }
+    }*/
 }

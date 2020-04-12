@@ -4,7 +4,7 @@ import Characters.Character;
 import Characters.Heroes.Hero;
 import Main.Piece;
 
-public class Warrior extends Hero {
+public abstract class Warrior extends Hero {
 
     public Warrior(String n, int m, int s, int a, int d, int mon, int x){
         super(n,m,s,a,d,mon,x);
@@ -22,6 +22,8 @@ public class Warrior extends Hero {
         agility = agility + agility/20;
         System.out.println("CONGRATULATIONS! You've leveled up. You are now a level " + level + " hero");
     }
+
+    public abstract Warrior copy();
 
     @Override
     public void attack(Character c) {

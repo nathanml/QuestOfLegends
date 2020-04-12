@@ -6,9 +6,9 @@ import Characters.Heroes.*;
 
 public class PotionMarket extends Market {
 
-    public PotionMarket(Player p)
+    public PotionMarket(Hero h)
     {
-        super (p);
+        super (h);
         items = new Potion[6];
         items[0] = new HealingPotion();
         items[1] = new StrengthPotion ();

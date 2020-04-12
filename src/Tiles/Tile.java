@@ -26,7 +26,7 @@ public class Tile {
         *  Useful for printing board
         */
         if(hasHeroPiece && hasMonsterPiece)
-            return ("| " + currentHero.getVal () + " " + val + currentMonster.getVal () + " |");
+            return ("| " + currentHero.getVal () + " " + val + " " + currentMonster.getVal () + " |");
         else if(hasHeroPiece)
             return ("| " + currentHero.getVal () + " " + val + "   |");
         else if(hasMonsterPiece)
@@ -40,10 +40,27 @@ public class Tile {
         hasHeroPiece = true;
     }
 
+    public void removeHero()
+    {
+        currentHero = null;
+        hasHeroPiece = false;
+    }
+
+    public void removeMonster()
+    {
+        currentMonster = null;
+        hasMonsterPiece = false;
+    }
+
     public void setMonsterTile(Monster m)
     {
         currentMonster = m.piece;
         hasMonsterPiece = true;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 
     public static void main(String[] args) {
