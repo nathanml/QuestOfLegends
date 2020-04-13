@@ -49,68 +49,7 @@ public class Quest extends BoardGame implements Playable{
 
     public static void printInstructions(){
         //Method for printing instructions of game
-        System.out.println("Welcome to The Quest, a magical game full of spells, heroes, and monsters!\n" +
-                "--------------------------------------------------------------------------\n" +
-                "THE WORLD OF PLAY\n" +
-                "The world of play is an 8x8 board. Each tile of the board either has a market \n" +
-                "(denoted by M), is non-accessible (denoted by N), or is a common tile (in which case it is empty). \n" +
-                "Your team will be denoted by the X on the board. You can navigate the board with the following commands:\n" +
-                "       W/w: Move up \n" +
-                "       A/a: Move left \n" +
-                "       S/s: Move down \n" +
-                "       D/d: Move right \n" +
-                "       Q/q: Quit game \n" +
-                "       I/i: Check current hero's inventory\n" +
-                "You can also type instructions to view the instructions of the game. \n" +
-                "\n" +
-                "You can only move to common tiles and markets. Your team will always start on the tile 1,1, right next to the\n" +
-                "Grand Market.\n" +
-                "\n" +
-                "--------------------------------------------------------------------------\n" +
-                "THE MARKET\n" +
-                "At markets you can buy weapons, armors, spells, and potions. The Grand Market is on the tile 1,2, right next \n" +
-                "to the heroes starting tile in the game. This market will sell every type of item, however it is the only market that will.\n" +
-                "All other markets will only buy and sell one type of item. The 6 types of markets are weaponries, armories, potion markets,\n" +
-                "fire markets, ice markets, and lightning markets. These markets will also change location and be randomly assigned when the hero\n" +
-                "lands on the tile (with the exception of the Grand Market, which is at tile 1,2).\n" +
-                "\n" +
-                "Weaponries sell weapons, which can be used to attack monsters during fights. Heroes can only hold one weapon at a time, so they must equip a weapon before they can attack with it.\n" +
-                "\n" +
-                "Armories sell armors, which protect heroes from incoming attacks from monsters.\n" +
-                "\n" +
-                "Potion markets sell potions, one use items that can increase one of a hero's attributes.\n" +
-                "\n" +
-                "Fire markets sell fire spells which damage an enemy and reduces that enemy's defense\n" +
-                "\n" +
-                "Ice markets sell ice spells which damage an enemy and reduces that enemy's damage.\n" +
-                "\n" +
-                "Lightning markets sell lightning spells which make it harder for an enemy to dodge attacks.\n" +
-                "\n" +
-                "------------------------------------------------------------------------------\n" +
-                "THE HEROES AND MONSTERS\n" +
-                "\n" +
-                "There are 3 types of heroes: Warriors (favored on strength and agility), Sorcerers (favored on dexterity and agility), and Paladins \n" +
-                "(favored on strength and dexterity). All heros have health (hp), magic power (mana), and experience (exp). Mana is required for \n" +
-                "casting spells and experience determines when a hero can level up. Hero's strength is the damage they inflict when they attack, dexterity increases damage when casting a spell, and agility increases the chance of dodging an incoming attack.\n" +
-                "\n" +
-                "When heroes land on a non-market tile, there is a 75% chance that a fight with monsters will be started. The team of monsters will\n" +
-                "be randomly formed at the moment of the fight. The three types of monsters are Dragons (higher damage), Exoskeletons (higher defense),\n" +
-                "and Spirits (higher dodge chance).\n" +
-                "\n" +
-                "------------------------------------------------------------------------------\n" +
-                "THE FIGHT\n" +
-                "\n" +
-                "During a fight, the heroes will attack first. Every hero will have a chance to make a move before the monsters attack. During a turn,\n" +
-                "each hero can:\n" +
-                "\t1. Attack: If the hero is holding a weapon, this will deal a great amout of damage to the monster. If not, the damage will \n" +
-                "\t\t\t\tbe determined by the hero's strength.\n" +
-                "\t2. Cast Spell: Hero's can cast any spell they have bought at any time during a fight if they have enough mana. \n" +
-                "\t3. Drink Potion: A hero can drink a potion during a round of the fight.\n" +
-                "\t4. Change weapon\n" +
-                "\t5. Change armor\n" +
-                "\n" +
-                "After the hero's attack the monsters will randomly attack the hero's and the hero's will defend. If a hero or monster faints during\n" +
-                "the fight, the fight will continue until the entire team has fainted, at which point that team loses the fight. If the heroes win, they are rewarded with money and experience. If they lose, they regain half of their hp and lose half of their money.");
+        System.out.println();
     }
 
     @Override

@@ -584,7 +584,7 @@ public abstract class Hero extends Character {
             }
 
             else if(in.equals ("A") || in.equals ("a")){
-                if(b.isValid (currentRow, currentCol - 1))
+                if(b.isValid (currentRow, currentCol - 1) && !b.tileAt (currentRow, currentCol-1).hasHeroPiece)
                 {
                     b.tileAt (currentRow,currentCol).removeHero ();
                     currentCol -= 1;
@@ -603,7 +603,7 @@ public abstract class Hero extends Character {
                 {
                     System.out.println("You cannot move forward until the monster is defeated");
                 }
-                else if(b.isValid (currentRow-1, currentCol))
+                else if(b.isValid (currentRow-1, currentCol) && !b.tileAt (currentRow-1, currentCol).hasHeroPiece)
                 {
                     b.tileAt (currentRow,currentCol).removeHero ();
                     currentRow -= 1;
@@ -616,7 +616,7 @@ public abstract class Hero extends Character {
             }
 
             else if(in.equals ("S") || in.equals ("s")){
-                if(b.isValid (currentRow+1, currentCol))
+                if(b.isValid (currentRow+1, currentCol) && !b.tileAt (currentRow+1, currentCol).hasHeroPiece)
                 {
                     b.tileAt (currentRow,currentCol).removeHero ();
                     currentRow += 1;
@@ -629,7 +629,7 @@ public abstract class Hero extends Character {
             }
 
             else if(in.equals ("D") || in.equals ("d")){
-                if(b.isValid (currentRow, currentCol+1))
+                if(b.isValid (currentRow, currentCol+1) && !b.tileAt (currentRow, currentCol+1).hasHeroPiece)
                 {
                     b.tileAt (currentRow,currentCol).removeHero ();
                     currentCol += 1;
@@ -746,15 +746,26 @@ public abstract class Hero extends Character {
                 while (!input.hasNextInt ())
                     System.out.println("Please enter an integer");
                 int col = input.nextInt ();
-                if(b.isValid (row,col) && (col == currentCol + 1 || col == currentCol - 1))
+                if((b.isValid (row,col) && (col == currentCol + 1 || col == currentCol - 1))||
+                        !b.isValid (row,col) || b.tileAt (row,col).hasHeroPiece)
                     System.out.println("Not a valid tile to teleport to");
                 else
                 {
-                    b.tileAt (currentRow,currentCol).removeHero ();
-                    currentRow = row;
-                    currentCol = col;
-                    b.setHeroTile (currentRow, currentCol, this);
-                    notOver = false;
+                    for(int i=0;i<3;i++)
+                    {
+                        if((monsters.getCharacter (i).currentCol == col || monsters.getCharacter (i).currentCol == col - 1 ||
+                                monsters.getCharacter (i).currentCol == col+1) && row>monsters.getCharacter (i).currentRow)
+                        {
+                            System.out.println("Not a valid tile to teleport to.");
+                        }
+                        else{
+                            b.tileAt (currentRow,currentCol).removeHero ();
+                            currentRow = row;
+                            currentCol = col;
+                            b.setHeroTile (currentRow, currentCol, this);
+                            notOver = false;
+                        }
+                    }
                 }
             }
 

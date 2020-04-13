@@ -85,7 +85,7 @@ public class Board {
         /*Method for checking if move is valid in game*/
         if(row >= numRows || row < 0 || col >= numColumns || col < 0)
             return false;
-        if(isAccessible(row,col))
+        else if(isAccessible(row,col))
             return true;
         else return false;
     }
