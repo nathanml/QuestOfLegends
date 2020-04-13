@@ -739,33 +739,62 @@ public abstract class Hero extends Character {
             else if(in.toLowerCase ().equals ("teleport"))
             {
                 System.out.println("Enter the row you would like to teleport to");
-                while (!input.hasNextInt ())
-                    System.out.println("Please enter an integer");
+                while (!input.hasNextInt ()) {
+                    System.out.println ("Please enter an integer");
+                }
                 int row = input.nextInt ();
                 System.out.println("Enter the column you would like to teleport to");
                 while (!input.hasNextInt ())
                     System.out.println("Please enter an integer");
                 int col = input.nextInt ();
-                if((b.isValid (row,col) && (col == currentCol + 1 || col == currentCol - 1))||
-                        !b.isValid (row,col) || b.tileAt (row,col).hasHeroPiece)
-                    System.out.println("Not a valid tile to teleport to");
-                else
+                Monster laneMonster = null;
+                if((col == 0 || col == 1) && currentCol != 0 && currentCol != 1 && b.isValid (row,col) && !b.tileAt (row,col).hasHeroPiece)
                 {
-                    for(int i=0;i<3;i++)
+                    laneMonster = (Monster) monsters.getCharacter (0);
+                    if(row<=laneMonster.currentRow)
                     {
-                        if((monsters.getCharacter (i).currentCol == col || monsters.getCharacter (i).currentCol == col - 1 ||
-                                monsters.getCharacter (i).currentCol == col+1) && row>monsters.getCharacter (i).currentRow)
-                        {
-                            System.out.println("Not a valid tile to teleport to.");
-                        }
-                        else{
-                            b.tileAt (currentRow,currentCol).removeHero ();
-                            currentRow = row;
-                            currentCol = col;
-                            b.setHeroTile (currentRow, currentCol, this);
-                            notOver = false;
-                        }
+                        System.out.println("Not a valid tile.");
                     }
+                    else {
+                        b.tileAt (currentRow,currentCol).removeHero ();
+                        currentRow = row;
+                        currentCol = col;
+                        b.setHeroTile (currentRow, currentCol, this);
+                        notOver = false;
+                    }
+                }
+                else if((col == 3 || col == 4) && currentCol != 3 && currentCol != 4 && b.isValid (row,col) && !b.tileAt (row,col).hasHeroPiece)
+                {
+                    laneMonster = (Monster) monsters.getCharacter (1);
+                    if(row<=laneMonster.currentRow)
+                    {
+                        System.out.println("Not a valid tile.");
+                    }
+                    else {
+                        b.tileAt (currentRow,currentCol).removeHero ();
+                        currentRow = row;
+                        currentCol = col;
+                        b.setHeroTile (currentRow, currentCol, this);
+                        notOver = false;
+                    }
+                }
+                else if((col == 6 || col == 7) && currentCol != 6 && currentCol != 7 && b.isValid (row,col) && !b.tileAt (row,col).hasHeroPiece)
+                {
+                    laneMonster = (Monster) monsters.getCharacter (2);
+                    if(row<=laneMonster.currentRow)
+                    {
+                        System.out.println("Not a valid tile.");
+                    }
+                    else {
+                        b.tileAt (currentRow,currentCol).removeHero ();
+                        currentRow = row;
+                        currentCol = col;
+                        b.setHeroTile (currentRow, currentCol, this);
+                        notOver = false;
+                    }
+                }
+                else {
+                    System.out.println("Not a valid tile.");
                 }
             }
 

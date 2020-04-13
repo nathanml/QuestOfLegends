@@ -183,19 +183,19 @@ public class Quest extends BoardGame implements Playable{
             if(x == 1)
             {
                 Dragon copy = dragons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,(size-1)*3);
+                copy.setTile (board,0,i*3);
                 copy.setStartLane (size-1);
                 monsters.add (copy);
             }
             else if(x==2)
             {
                 Exoskeleton copy = exoskeletons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,(size-1)*3);
+                copy.setTile (board,0,i*3);
                 monsters.add(copy);
             }
             else {
                 Spirit copy = spirits[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,(size-1)*3);
+                copy.setTile (board,0,i*3);
                 monsters.add(copy);
             }
             monsters.getCharacter (i).setTile (board, 0, i*3);
