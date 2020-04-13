@@ -555,6 +555,21 @@ public abstract class Hero extends Character {
         boolean notOver = true;
         while (notOver)
         {
+            System.out.println("W/w: Move up\n" +
+                    "    A/a: Move left\n" +
+                    "    S/s: Move down\n" +
+                    "    D/d: Move right\n" +
+                    "    Q/q: Quit game\n" +
+                    "    I/i: Check current hero's inventory\n" +
+                    "    Instructions: Show the instructions\n" +
+                    "    B/B: Return to the Heroes Nexus\n" +
+                    "    1: Attack a monster on same or neighboring tile\n" +
+                    "    2: Cast a spell\n" +
+                    "    3: Drink a potion\n" +
+                    "    4: Equip a weapon\n" +
+                    "    5: Put on an armor\n" +
+                    "    teleport: Teleport to a tile in a different lanen\n" +
+                    "    exit: Exit the game");
             System.out.println("Enter your move: ");
             while (!input.hasNext ()){
                 System.out.println("Invalid input, please enter your move: ");
