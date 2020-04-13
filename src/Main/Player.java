@@ -29,10 +29,8 @@ public class Player {
             heroes.changeCurrentCharacter (i);
             Hero currentHero = (Hero) heroes.getCurrentCharacter ();
             System.out.println(currentHero.getName () + ", your turn.");
-            currentHero.printAttributes ();
-            currentHero.checkInventory ();
             currentHero.move(board, monsters);
-            if(board.tileAt (currentHero.currentRow,currentHero.currentCol).getName ().equals ("Nexus Tile"))
+            if(board.tileAt (currentHero.currentRow,currentHero.currentCol).getName ().equals ("Nexus Tile") && currentHero.currentRow == 7)
             {
                 HeroNexus M = new HeroNexus (currentHero);
                 M.enter ();

@@ -326,6 +326,19 @@ public class Quest extends BoardGame implements Playable{
 
         while (!isOver) {
 
+            if(numTurns != 0)
+            {
+                for(int i=0; i<3; i++)
+                {
+                    Hero current = (Hero) currentPlayer.heroes.getCharacter (i);
+                    int mana = current.getMana ();
+                    int hp = current.getHP ();
+                    int increase = mana/10;
+                    current.increaseMana (increase);
+                    increase = hp/10;
+                    current.increaseHP (increase);
+                }
+            }
             //Every 8 rounds
             if (numTurns % 8 == 0 && numTurns != 0) {
                 for (int i = 0; i < 3; i++) {
@@ -349,7 +362,6 @@ public class Quest extends BoardGame implements Playable{
             }
                 //Monsters move first
                 for (int i = 0; i < monsters.getSize (); i++) {
-                    System.out.println (i);
                     monsters.changeCurrentCharacter (i);
                     Monster currentMonster = (Monster) monsters.getCurrentCharacter ();
                     System.out.println (currentMonster.getName () + " moves");
@@ -364,16 +376,18 @@ public class Quest extends BoardGame implements Playable{
                             for (int j = 0; j < 3; j++) {
                                 if (warriors[j].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
                                     Warrior copy = warriors[j].copy ();
+                                    copy.loseMana (copy.getMana ()/2);
+                                    copy.loseHP(copy.getHP ()/2);
                                     copy.setTile (board, 7, currentHero.getStartLane () * 3);
-                                    currentPlayer.heroes.add (copy);
+                                    currentPlayer.heroes.characters.add (j,copy);
                                 } else if (sorcerers[j].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
                                     Sorcerer copy = sorcerers[j].copy ();
                                     copy.setTile (board, 7, currentHero.getStartLane () * 3);
-                                    currentPlayer.heroes.add (copy);
-                                } else if (paladins[i].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
+                                    currentPlayer.heroes.characters.add (j,copy);
+                                } else if (paladins[j].getName ().toLowerCase ().equals (currentHero.getName ().toLowerCase ())) {
                                     Paladin copy = paladins[i].copy ();
                                     copy.setTile (board, 7, currentHero.getStartLane () * 3);
-                                    currentPlayer.heroes.add (copy);
+                                    currentPlayer.heroes.characters.add (j,copy);
                                 }
                             }
                         }
@@ -382,6 +396,14 @@ public class Quest extends BoardGame implements Playable{
 
                 //Player moves next
                 currentPlayer.move (board, monsters);
+                for(int x = 0; x < 3; x++)
+                {
+                    Monster currentMonster = (Monster) monsters.getCharacter (x);
+                    if(!currentMonster.isAlive ())
+                    {
+                        board.tileAt (currentMonster.currentRow,currentMonster.currentCol).removeMonster ();
+                    }
+                }
                 checkWinner ();
                 numTurns += 1;
         }
@@ -420,7 +442,7 @@ public class Quest extends BoardGame implements Playable{
         }
     }
 
-    public static void main (String[]args){
+    public static void main (String[] args){
 
     }
 }

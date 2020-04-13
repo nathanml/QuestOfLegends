@@ -9,6 +9,8 @@ public class InaccessibleTile extends Tile{
         super ();
         name = "Inaccessible Tile";
         val = 'I';
+        hasMonsterPiece = false;
+        hasHeroPiece = false;
     }
 
     @Override

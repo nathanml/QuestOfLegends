@@ -597,7 +597,13 @@ public abstract class Hero extends Character {
             }
 
             else if(in.equals ("W") || in.equals ("w")){
-                if(b.isValid (currentRow-1, currentCol))
+                if(b.tileAt (currentRow,currentCol).hasMonsterPiece ||
+                        (currentCol % 2 == 0 && b.tileAt (currentRow, currentCol+1).hasMonsterPiece)||
+                        (currentCol %2 == 1 && b.tileAt (currentRow, currentCol-1).hasMonsterPiece))
+                {
+                    System.out.println("You cannot move forward until the monster is defeated");
+                }
+                else if(b.isValid (currentRow-1, currentCol))
                 {
                     b.tileAt (currentRow,currentCol).removeHero ();
                     currentRow -= 1;
@@ -828,4 +834,7 @@ public abstract class Hero extends Character {
     }
 
 
+    public void loseHP(int i) {
+        hp -= i;
+    }
 }
