@@ -42,7 +42,7 @@ At the hero nexus you can buy weapons, armors, spells, and potions. The heroes n
     Fire markets sell fire spells which damage an enemy and reduces that enemy's defense
     Ice markets sell ice spells which damage an enemy and reduces that enemy's damage.
     Lightning markets sell lightning spells which make it harder for an enemy to dodge attacks.
-------------------------------------------------------------------------------\n" +
+------------------------------------------------------------------------------
 THE HEROES AND MONSTERS
 There are 3 types of heroes: Warriors (favored on strength and agility), Sorcerers (favored on dexterity and agility), and Paladins 
 (favored on strength and dexterity). All heros have health (hp), magic power (mana), and experience (exp). Mana is required for casting spells and experience determines when a hero can level up. Hero's strength is the damage they inflict when they attack, dexterity increases damage when casting a spell, and agility increases the chance of dodging an incoming attack.\n" +
