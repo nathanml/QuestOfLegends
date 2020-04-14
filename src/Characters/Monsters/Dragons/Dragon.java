@@ -17,24 +17,4 @@ public abstract class Dragon extends Monster {
 
     public abstract Dragon copy();
 
-    /*
-    @Override
-    public void attack(Character c) {
-
-    }
-
-    @Override
-    public void loseFight() {
-
-    }
-
-    @Override
-    public void winFight() {
-
-    }
-
-    @Override
-    public void displayStats() {
-
-    }*/
 }

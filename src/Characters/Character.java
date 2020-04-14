@@ -4,8 +4,8 @@ import Main.*;
 import Tiles.Board;
 
 public abstract class Character implements Fightable {
-    protected String name;
-    public int level;
+    public String name;
+    protected int level;
     public int currentRow;
     public int currentCol;
     protected int hp = 100*level;

@@ -1,7 +1,6 @@
 package Tiles;
 
 import Characters.Heroes.Hero;
-import Main.Piece;
 
 public class PlainTile extends Tile {
 

@@ -14,27 +14,7 @@ public abstract class Exoskeleton extends Monster {
     }
 
     public abstract Exoskeleton copy();
-    /*
-    @Override
-    public void attack(Character c) {
 
-    }
-
-    @Override
-    public void loseFight() {
-
-    }
-
-    @Override
-    public void winFight() {
-
-    }
-
-    @Override
-    public void displayStats() {
-
-    }
-*/
     public static void main(String[] args){
 
     }

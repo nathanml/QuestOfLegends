@@ -37,7 +37,7 @@ public abstract class Market {
                 System.out.println ("Please enter an integer");
             int x = input.nextInt ();
             if (x >= 0 && x < items.length) {
-                if (currentHero.canAfford (items[x]) && items[x].getLevel () <= currentHero.level) {
+                if (currentHero.canAfford (items[x]) && items[x].getLevel () <= currentHero.getLevel ()) {
                     items[x].buyItem (currentHero);
                     System.out.println ("You've bought the " + items[x].getName ());
                     currentHero.wallet.spendMoney (items[x].getPrice ());

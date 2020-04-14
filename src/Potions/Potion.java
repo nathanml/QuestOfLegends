@@ -17,7 +17,7 @@ public abstract class Potion extends Item implements Sellable{
 
     @Override
     public void buyItem(Hero h) {
-        if(h.level >= minLevel){
+        if(h.getLevel () >= minLevel){
             h.wallet.spendMoney (this.price);
             h.addPotion (this);
         }
