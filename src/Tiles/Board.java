@@ -28,17 +28,17 @@ public class Board {
                 }
                 else
                 {
-                    double p = Math.random () * 4;
+                    double p = Math.random () * 6;
 
-                    if(p < 1)
+                    if(p < 3)
                     {
                         tiles[i][j] = new PlainTile ();
                     }
-                    else if(p >= 1 && p < 2)
+                    else if(p >= 3 && p < 4)
                     {
                         tiles[i][j] = new BushTile ();
                     }
-                    else if(p >= 2 && p < 3)
+                    else if(p >= 4 && p < 5)
                     {
                         tiles[i][j] = new KuoloTile ();
                     }

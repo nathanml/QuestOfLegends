@@ -1,66 +1,73 @@
-Nathan Maher Levy
-U53054148
+Pair#19
+Nathan Maher Levy (U53054148)
+Qingyang, Xu
 
 CLASS STRUCTURE
+----------------------------------------------
+
+1. MAIN CLASSES
+
+BoardGame: Abstract class with attributes shared by all board games. Implements Playable Interface (same as part 1)
+
+Fightable: An interface holding methods shared by all classes that can participate in fights (heroes, monsters, teams etc.) These methods include damage, dodge, attack, winFight etc. (same as part 1)
+
+Item: Class for all items that can be bought and sold (Newly added class)
+
+Main: Runs the game (same as part 1)
+
+Piece: Class for game pieces. Unlike in part1 where there were 3 pieces total (market, NA, heroes), every character has a piece that denotes it on the board. 
+
+Playable: Interface for methods shared by all games. Has generateTeams() and playGame() (same as part 1)
 
 
-1. GAME CLASSES
+Player: Class for the player. A player is created when the game begins and has a team of heroes as well as a game piece. The player has a move method, which calls the move method for every hero on the player's team
 
-Board: Class holding board attributes and methods for the game
-
-BoardGame: Abstract class with attributes shared by all board games. Implements Playable Interface
-
-Fight: The Fight Class is called when monsters appear. This class initializes the instances of each monster and creates a random team of monsters matching the heroes level. Fight has a method startFight which runs the fight
-
-Fightable: An interface holding methods shared by all classes that can participate in fights (heroes, monsters, teams etc.) These methods include damage, dodge, attack, winFight etc.
-
-Main: Runs the game
-
-Piece: Class for game pieces. The 3 main pieces used in the game are the hero piece ("X"), the market piece ("M"), and the NA piece ("N")
-
-Playable: Interface for methods shared by all games. Has generateTeams() and playGame()
-
-Player: Class for the player. A player is created when the game begins and has a team of heroes as well as a game piece. The player controls the movement of the game piece with the move() method
-
-Quest: The class for the game itself. Generates the game board, pieces, and players. Extends the BoardGame class so it implements the playGame method which contains the logic for the game.
+Quest: The class for the game itself. Generates the game board, pieces, and players. Extends the BoardGame class so it implements the playGame method which contains the logic for the game. Methods for generating teams, initializing board and pieces, as well as playGame method have all been modified from part 1.
 
 Sellable: Interface for methods shared by all items that can be bought and sold (e.g buyItem(), sellItem())
 
-Team: Class for a Team. Teams consist of generic Characters (heroes or monsters). Team implements the fightable interface
+Team: Class for a Team. Teams consist of generic Characters (heroes or monsters). Team still implements the fightable interface for scaleability even though team fights do not exist in this version of the game.
 
-Tile: Class for each tile on the board. Tiles must hold a piece and the hero piece must be able to move to all tiles except NA tiles
+Wallet: Class for a wallet which holds the hero's money and updates the hero's money. (same as part 1)
 
-Wallet: Class for a wallet which holds the hero's money and updates the hero's money.
+2. TILE CLASSES
 
+Board: Class holding board attributes and methods for the game. Constructor modified to form the 3 lanes and 2 Nexuses. All other tiles are randomly placed on the board.
 
-2. CHARACTER CLASSES
+Tile: Class for each tile on the board. Tiles can hold a hero piece and a monster piece, but not more than one at a time. For this reason I added 2 public booleans to track if a tile has a hero or monster piece.
+	BushTile, CaveTile, InaccessibleTile, KuoloTile, NexusTile, and PlainTile all extend this class.
 
-Character: Abstract class for attributes shared by all characters (hp, name, level). Implements the fightable interface since all characters can fight
+3. CHARACTER CLASSES
 
-Hero: Abstract class for heroes that extends Character. Heroes have name, mana, exp, hp, level, nextLevel(which holds the amount of exp necessary for the next level), and an inventory of potions, fire spells, ice spells, lightning spells, weapons, and armors (each stored as an ArrayList). Implements methods from fightable interface and contains the methods for the actions a hero can do during a fight (drinkPotion(), castSpell(), changeWeapon(), changeArmor(), attack()).
-	Paladin: Extends Hero and implements abstract method levelUp() so that Paladins' favored skills are increased more.
+Character: Abstract class for attributes shared by all characters (hp, name, level). Implements the fightable interface since all characters can fight. Added an abstract move method to Character since every hero and monster can move on the board.  
+
+Hero: Abstract class for heroes that extends Character. Heroes have name, mana, exp, hp, level, nextLevel(which holds the amount of exp necessary for the next level), and an inventory of potions, fire spells, ice spells, lightning spells, weapons, and armors (each stored as an ArrayList). Implements methods from fightable interface and contains the methods for the actions a hero can do during a fight (drinkPotion(), castSpell(), changeWeapon(), changeArmor(), attack()). Mostly kept from part 1 except the move method was added. When implemented in the hero class, prompts user for hero's move. Most of the code from that was taken from my original player and fight class. Additionally added a teleport method for heroes.
+	Paladin: Abstract class that xtends Hero and implements abstract method levelUp() so that Paladins' favored skills are increased 			more. Has abstract copy() method that can be used for when a hero responds.
 			Garl_Glittergold, Sehanine_Moonbow, Solonor_Thelandira: Classes for individual Paladins with specified values hard-coded in. Extend Paladin
-	Sorcerer: Extends Hero and implements abstract method levelUp() so that Sorcerer's favored skills are increased more.
-			Rillifane_Rallathil, Segojan_Earthcaller, Skoraeus_Stonebones: Classes for individual Sorcerers with specified values hard-coded in. Extend Sorcerer
-	Warrior: Extends Hero and implements abstract method levelUp() so that Warrior's favored skills are increased more.
-			Flandal_Steelskin, Gaerdal_Ironhand, Muamman_Duathall: Classes for individual Warriors with specified values hard-coded in. Extend Warrior
+	Sorcerer: Abstract class that extends Hero and implements abstract method levelUp() so that Sorcerer's favored skills are 					increased more. Has abstract copy() method that can be used for when a hero responds.
+				Rillifane_Rallathil, Segojan_Earthcaller, Skoraeus_Stonebones: Classes for individual Sorcerers with specified values hard-coded in. Extend Sorcerer
+	Warrior: Abstract class that extends Hero and implements abstract method levelUp() so that Warrior's favored skills are increased 			more. Has abstract copy() method that can be used for when a hero responds.
+				Flandal_Steelskin, Gaerdal_Ironhand, Muamman_Duathall: Classes for individual Warriors with specified values hard-coded in. Extend Warrior
 
-Monster: Class for monsters that extends Character. In addition to character attributes, monsters have damage, defense, and dodge chance values. This class implements fight methods for monsters.
+Monster: Class for monsters that extends Character. In addition to character attributes, monsters have damage, defense, and dodge chance values. This class implements fight methods for monsters. Monster class kept the same except for the move method. When implemented in the monster class, monster randomly moves unless it can attack a hero, in which case it attacks. Spirit, Exoskeleton, and Dragon classes were turned into abstract classes so that the copy method can be implemented and allow characters to respawn.
+
 
 3. MARKET-RELATED CLASSES
 
-Armor: Class for armor. Implements sellable methods. Breastplate, Full_Body_Armor, Platinum_Shield, Speed_Boots, and Wizard_Shield all extend this class with specified values hard-coded in.
+Armor: Class for armor. Implements sellable methods. Breastplate, Full_Body_Armor, Platinum_Shield, Speed_Boots, and Wizard_Shield all extend this class with specified values hard-coded in. (same as part 1)
 
-Spell: Abstract class for spells. Contain damage, price, minimum level, mana cost, and a name and have abstract method castSpell.
+Spell: Abstract class for spells. Contain damage, price, minimum level, mana cost, and a name and have abstract method castSpell. (same as part 1)
 
-FireSpell: Extends Spell, implements sellable methods and castSpell() method. BreathOfFire, FlameTornado, HeatWave, LavaCommet all extend this class with specified values hard-coded in.
+FireSpell: Extends Spell, implements sellable methods and castSpell() method. BreathOfFire, FlameTornado, HeatWave, LavaCommet all extend this class with specified values hard-coded in. (same as part 1)
 
-IceSpell: Extends Spell, implements sellable methods and castSpell() emthod. ArcticStorm, FrostBlizzard, IceBlade, and SnowCannon all extend this class with specified values hard-coded in.
+IceSpell: Extends Spell, implements sellable methods and castSpell() emthod. ArcticStorm, FrostBlizzard, IceBlade, and SnowCannon all extend this class with specified values hard-coded in. (same as part 1)
 
-LightningSpell: Extends Spell, implements sellable methods and castSpell() emthod. ElectricArrows, LightningDagger, SparkNeedles, and ThunderBlast all extend this class with specified values hard-coded in.
+LightningSpell: Extends Spell, implements sellable methods and castSpell() method. ElectricArrows, LightningDagger, SparkNeedles, and ThunderBlast all extend this class with specified values hard-coded in. (same as part 1)
 
-Potion: Abstract class for potions. Implements the sellable methods and contains abstract method usePotion(). Ambrosia, HealingPotion, LuckElixir, MagicPotion, MermaidTears, and StrengthPotion all extend this class and implement the usePotion() method since all potions increase different attributes.
+Potion: Abstract class for potions. Implements the sellable methods and contains abstract method usePotion(). Ambrosia, HealingPotion, LuckElixir, MagicPotion, MermaidTears, and StrengthPotion all extend this class and implement the usePotion() method since all potions increase different attributes. (same as part 1)
 
-Weapon: Class for weapons that implements the sellable interface. All weapons have a name, price, minLevel, and damage. Axe, Bow, Dagger, Scythe, Shield, Sword, and TSword all extend this class with the specified values hard-coded in.
+Weapon: Class for weapons that implements the sellable interface. All weapons have a name, price, minLevel, and damage. Axe, Bow, Dagger, Scythe, Shield, Sword, and TSword all extend this class with the specified values hard-coded in. (same as part 1)
 
-Market: Abstract class for Markets. Markets have a currentPlayer whose team is in the market. They also all have an array of Sellables. This implements the method move() which runs when the heroes land on a market tile. It also has the abstract method sell for selling in each type of Market. Armory, FireMarket, IceMarket, LightningMarket, PotionMarket, and WeaponsMarket all extend the Market class with different values for the array of items. These classes also all implement the sell method inherited from market. GrandMarket also extends market but overrides the enter() method because the GrandMarket will allow the player to enter any of the markets.
+Market: Abstract class for Markets. Markets have a currentPlayer whose team is in the market. They also all have an array of Items. This implements the method move() which runs when the heroes land on a market tile. It also has the abstract method sell for selling in each type of Market. Armory, FireMarket, IceMarket, LightningMarket, PotionMarket, and WeaponsMarket all extend the Market class with different values for the array of items. These classes also all implement the sell method inherited from market. (same as part 1)
+
+HeroNexus: Extends market but overrides the enter() method because the HeroNexus will allow the player to enter any of the markets. HeroNexus is the GrandMarket class from part 1.

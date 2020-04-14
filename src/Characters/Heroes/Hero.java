@@ -763,7 +763,8 @@ public abstract class Hero extends Character {
                     System.out.println("Please enter an integer");
                 int col = input.nextInt ();
                 Monster laneMonster = null;
-                if((col == 0 || col == 1) && currentCol != 0 && currentCol != 1 && b.isValid (row,col) && !b.tileAt (row,col).hasHeroPiece)
+                if((col == 0 || col == 1) && currentCol != 0 && currentCol != 1 && b.isValid (row,col) &&
+                        !b.tileAt (row,col).hasHeroPiece)
                 {
                     laneMonster = (Monster) monsters.getCharacter (0);
                     if(row<=laneMonster.currentRow)

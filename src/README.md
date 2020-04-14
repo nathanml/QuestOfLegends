@@ -1,5 +1,6 @@
-Nathan Maher Levy
-U53054148
+Pair#19
+Nathan Maher Levy (U53054148)
+Qingyang, Xu
 
 To run this project, run the following commands in terminal from the root directory:
 
@@ -7,7 +8,7 @@ javac Main/Main.java
 java Main/Main
 
 Welcome to The Quest of Legends, a magical game full of spells, heroes, and monsters!
---------------------------------------------------------------------------\n" +
+--------------------------------------------------------------------------
 THE WORLD OF PLAY
 The world of play is an 8x8 board divided into 3 lanes. At each end of the board is the hero
 and monster nexus. The first team that gets to the other team's nexus is the winner of the game.

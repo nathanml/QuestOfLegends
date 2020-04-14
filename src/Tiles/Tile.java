@@ -4,7 +4,7 @@ import Characters.Heroes.Hero;
 import Characters.Monsters.Monster;
 import Main.*;
 
-public class Tile {
+public abstract class Tile {
     protected String name;
     protected char val;
     public Piece currentHero;   //Stores piece currently on tile
@@ -62,6 +62,8 @@ public class Tile {
     {
         return name;
     }
+
+    public abstract void performAction(Hero h);
 
     public static void main(String[] args) {
         // write your code here

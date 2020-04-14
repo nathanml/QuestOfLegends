@@ -135,113 +135,6 @@ public class Quest extends BoardGame implements Playable{
         paladins[2] = new Garl_Glittergold ();
     }
 
-    @Override
-    public void generateTeams() {
-        //Method for generating the player's team
-
-        //Prompt user for size of the team
-        int size=3;
-        currentPlayer = new Player ("Player", size);
-
-        //Create the team, and add the desired heroes to the team
-
-        currentTeam = new Team ("Heroes", size);
-
-        //Prints all heroes for user
-        System.out.println("Choose your Heroes:");
-
-        System.out.println("1. WARRIORS");
-        System.out.println("--------");
-        for(int i=0; i<3; i++)
-        {
-            warriors[i].printHero ();
-        }
-
-        System.out.println("2. SORCERERS");
-        System.out.println("---------");
-        for(int i=0; i<3; i++)
-        {
-            sorcerers[i].printHero ();
-        }
-
-        System.out.println("3. PALADINS");
-        System.out.println("---------");
-        for(int i=0; i<3; i++)
-        {
-            paladins[i].printHero ();
-        }
-
-        while (size > 0)
-        {
-            //Obtains user input and adds desired hero to team
-            System.out.println("Enter the name of the hero you want on your team: ");
-            String inp = input.nextLine ();
-            if(inp.equals (""))
-                inp = input.nextLine ();
-            for(int i=0; i<3;i++)
-            {
-                if(warriors[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
-                {
-                    Warrior copy = warriors[i].copy();
-                    copy.setTile (board,7, (size-1)*3);
-                    copy.setStartLane (size-1);
-                    currentPlayer.heroes.add (copy);
-                    System.out.println(copy.getName () + " has joined your team");
-                    size -= 1;
-                }
-
-                else if(sorcerers[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
-                {
-                    Sorcerer copy = sorcerers[i].copy();
-                    copy.setTile (board,7,(size-1)*3);
-                    copy.setStartLane (size-1);
-                    currentPlayer.heroes.add (copy);
-                    System.out.println(sorcerers[i].getName () + " has joined your team");
-                    size -= 1;
-                }
-
-                else if(paladins[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
-                {
-                    Paladin copy = paladins[i].copy();
-                    copy.setTile (board,7,(size-1)*3);
-                    copy.setStartLane (size-1);
-                    currentPlayer.heroes.add (copy);
-                    System.out.println(paladins[i].getName () + " has joined your team");
-                    size -= 1;
-                }
-            }
-        }
-
-        //Method for creating team of monsters
-        size = 3;
-        monsters = new Team<Monster> ("Monsters", size);
-
-        for(int i=0; i<size; i++)
-        {
-            //Randomly assign correct level dragon, exoskeleton, or spirit
-            int x = (int) (Math.random () * 3);
-            if(x == 1)
-            {
-                Dragon copy = dragons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,i*3);
-                copy.setStartLane (size-1);
-                monsters.add (copy);
-            }
-            else if(x==2)
-            {
-                Exoskeleton copy = exoskeletons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,i*3);
-                monsters.add(copy);
-            }
-            else {
-                Spirit copy = spirits[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
-                copy.setTile (board,0,i*3);
-                monsters.add(copy);
-            }
-            monsters.getCharacter (i).setTile (board, 0, i*3);
-        }
-    }
-
     private void generateMonsters() {
         createDragons();
         createSpirits();
@@ -296,6 +189,170 @@ public class Quest extends BoardGame implements Playable{
         {
             Monster currentMonster = (Monster) monsters.getCharacter (i);
             board.setMonsterTile (0, i*3, currentMonster);
+        }
+    }
+
+    @Override
+    public void generateTeams() {
+        //Method for generating the player's team
+
+        //Prompt user for size of the team
+        int size=3;
+        currentPlayer = new Player ("Player", size);
+
+        //Create the team, and add the desired heroes to the team
+
+        currentTeam = new Team ("Heroes", size);
+
+        //Prints all heroes for user
+        System.out.println("Choose your Heroes:");
+
+        System.out.println("1. WARRIORS");
+        System.out.println("--------");
+        for(int i=0; i<3; i++)
+        {
+            warriors[i].printHero ();
+        }
+
+        System.out.println("2. SORCERERS");
+        System.out.println("---------");
+        for(int i=0; i<3; i++)
+        {
+            sorcerers[i].printHero ();
+        }
+
+        System.out.println("3. PALADINS");
+        System.out.println("---------");
+        for(int i=0; i<3; i++)
+        {
+            paladins[i].printHero ();
+        }
+
+        //Hero team created
+        while (size > 0)
+        {
+            //Obtains user input and adds desired hero to team
+            System.out.println("Enter the name of the hero you want on your team: ");
+            String inp = input.nextLine ();
+            if(inp.equals (""))
+                inp = input.nextLine ();
+            for(int i=0; i<3;i++)
+            {
+                if(warriors[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
+                {
+                    Warrior copy = warriors[i].copy();
+                    System.out.println("Which lane would you like to put " + copy.getName () + " in? [0,1,2]");
+                    int in = input.nextInt ();
+                    while (in < 0 || in > 2) {
+                        System.out.println ("Not a valid input. Enter 0,1,or 2");
+                        in = input.nextInt ();
+                    }
+                    while ((in==0 && (board.tileAt (7,0).hasHeroPiece || board.tileAt (7,1).hasHeroPiece))||
+                            (in==1 && (board.tileAt (7,3).hasHeroPiece || board.tileAt (7,4).hasHeroPiece)) ||
+                            (in==2 && (board.tileAt (7,6).hasHeroPiece || board.tileAt (7,7).hasHeroPiece)))
+                    {
+                        System.out.println("That lane already has a hero");
+                        in = input.nextInt ();
+                    }
+                    copy.setTile (board,7, in*3);
+                    copy.setStartLane (in);
+                    currentPlayer.heroes.add (copy);
+                    System.out.println(copy.getName () + " has joined your team");
+                    size -= 1;
+                }
+
+                else if(sorcerers[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
+                {
+                    Sorcerer copy = sorcerers[i].copy();
+                    System.out.println("Which lane would you like to put " + copy.getName () + " in? [0,1,2]");
+                    int in = input.nextInt ();
+                    while (in < 0 || in > 2) {
+                        System.out.println ("Not a valid input. Enter 0,1,or 2");
+                        in = input.nextInt ();
+                    }
+                    while ((in==0 && (board.tileAt (7,0).hasHeroPiece || board.tileAt (7,1).hasHeroPiece))||
+                            (in==1 && (board.tileAt (7,3).hasHeroPiece || board.tileAt (7,4).hasHeroPiece)) ||
+                            (in==2 && (board.tileAt (7,6).hasHeroPiece || board.tileAt (7,7).hasHeroPiece)))
+                    {
+                        System.out.println("That lane already has a hero");
+                        in = input.nextInt ();
+                    }
+                    copy.setTile (board,7, in*3);
+                    copy.setStartLane (in);
+                    currentPlayer.heroes.add (copy);
+                    System.out.println(copy.getName () + " has joined your team");
+                    size -= 1;
+                }
+
+                else if(paladins[i].getName ().toLowerCase ().equals (inp.toLowerCase ()))
+                {
+                    Paladin copy = paladins[i].copy();
+                    System.out.println("Which lane would you like to put " + copy.getName () + " in? [0,1,2]");
+                    int in = input.nextInt ();
+                    while (in < 0 || in > 2) {
+                        System.out.println ("Not a valid input. Enter 0,1,or 2");
+                        in = input.nextInt ();
+                    }
+                    while ((in==0 && (board.tileAt (7,0).hasHeroPiece || board.tileAt (7,1).hasHeroPiece))||
+                            (in==1 && (board.tileAt (7,3).hasHeroPiece || board.tileAt (7,4).hasHeroPiece)) ||
+                            (in==2 && (board.tileAt (7,6).hasHeroPiece || board.tileAt (7,7).hasHeroPiece)))
+                    {
+                        System.out.println("That lane already has a hero");
+                        in = input.nextInt ();
+                    }
+                    copy.setTile (board,7, in*3);
+                    copy.setStartLane (in);
+                    currentPlayer.heroes.add (copy);
+                    System.out.println(copy.getName () + " has joined your team");
+                    size -= 1;
+                }
+            }
+        }
+
+        //Monster team created
+        size = 3;
+        monsters = new Team<Monster> ("Monsters", size);
+
+        for(int i=0; i<size; i++)
+        {
+            //Randomly assign correct level dragon, exoskeleton, or spirit
+            int x = (int) (Math.random () * 3);
+            if(x == 1)
+            {
+                Dragon copy = dragons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,i*3);
+                copy.setStartLane (size-1);
+                monsters.add (copy);
+            }
+            else if(x==2)
+            {
+                Exoskeleton copy = exoskeletons[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,i*3);
+                monsters.add(copy);
+            }
+            else {
+                Spirit copy = spirits[currentPlayer.heroes.getCharacter (i).getLevel ()-1].copy ();
+                copy.setTile (board,0,i*3);
+                monsters.add(copy);
+            }
+            monsters.getCharacter (i).setTile (board, 0, i*3);
+        }
+    }
+
+    @Override
+    public void checkWinner() {
+        for(int i=0; i<3; i++)
+        {
+            if(monsters.getCharacter (i).currentRow == 7)
+            {
+                winner = monsters.getName ();
+                isOver = true;
+            }
+            else if(currentPlayer.heroes.getCharacter (i).currentRow == 0)
+            {
+                winner = currentPlayer.heroes.getName ();
+                isOver = true;
+            }
         }
     }
 
@@ -402,22 +459,6 @@ public class Quest extends BoardGame implements Playable{
         else {
             System.out.println("Goodbye.");
             System.exit(0);
-        }
-    }
-
-    private void checkWinner() {
-        for(int i=0; i<3; i++)
-        {
-            if(monsters.getCharacter (i).currentRow == 7)
-            {
-                winner = monsters.getName ();
-                isOver = true;
-            }
-            else if(currentPlayer.heroes.getCharacter (i).currentRow == 0)
-            {
-                winner = currentPlayer.heroes.getName ();
-                isOver = true;
-            }
         }
     }
 

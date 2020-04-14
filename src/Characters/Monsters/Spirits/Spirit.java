@@ -15,12 +15,6 @@ public abstract class Spirit extends Monster {
 
     public abstract Spirit copy();
 
-    public void respawn(Board b)
-    {
-        Spirit copy = copy();
-        copy.setStartLane (startLane);
-        copy.setTile (b,0,startLane*3);
-    }
     public static void main(String[] args){
 
     }

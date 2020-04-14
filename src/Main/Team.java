@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class Team<T extends Character> implements Fightable {
     private String name; //Name of the team
-    private static Scanner input = new Scanner(System.in);
     public int totalHealth;
     int level;      //Level of the team
     int current;    //Tracks index of current character
@@ -74,15 +73,6 @@ public class Team<T extends Character> implements Fightable {
     //Returns size of team
     public int getSize(){
         return characters.size ();
-    }
-
-    public void updateHealth()
-    {
-        totalHealth = 0;
-        for(int i=0; i<characters.size (); i++)
-        {
-            totalHealth += characters.get (i).getHP ();
-        }
     }
 
     //Overridden method for causing damage to a team
